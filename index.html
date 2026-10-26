@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Education Landing Page</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ============================================================
+       DECORATIVE BACKGROUND SHAPES
+  ============================================================ -->
+  <div class="bg-shapes" aria-hidden="true">
+    <!-- Top area shapes -->
+    <div class="shape shape-circle shape-purple shape-top-right"></div>
+    <div class="shape shape-diamond shape-yellow shape-top-center"></div>
+    <div class="shape shape-circle shape-orange-ring shape-top-far-right"></div>
+
+    <!-- Bottom area shapes -->
+    <div class="shape shape-circle shape-purple shape-bottom-left"></div>
+    <div class="shape shape-diamond shape-yellow shape-bottom-center"></div>
+    <div class="shape shape-circle shape-orange-ring shape-bottom-right"></div>
+
+    <!-- Side triangles / accent bars -->
+    <div class="shape shape-bar shape-left-mid"></div>
+    <div class="shape shape-bar shape-right-mid"></div>
+  </div>
+
+  <!-- ============================================================
+       MAIN CARD CONTAINER
+  ============================================================ -->
+  <main class="card" role="main">
+
+    <!-- -------------------------------------------------------
+         WHITE RIGHT PANEL  (rendered first in HTML so it sits
+         behind the blue section in z-index terms)
+    ------------------------------------------------------- -->
+    <section class="panel-white" aria-label="Illustration panel">
+
+      <!-- Curved divider shape -->
+      <div class="white-curve" aria-hidden="true"></div>
+
+      <!-- Graduation cap SVG illustration -->
+      <div class="illustration-wrapper">
+        <svg
+          class="grad-cap-svg"
+          viewBox="0 0 320 320"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="Graduation cap illustration"
+          role="img"
+        >
+          <!-- ── Yellow rays ── -->
+          <!-- top ray -->
+          <line x1="160" y1="120" x2="160" y2="55"  stroke="#F2D500" stroke-width="10" stroke-linecap="round"/>
+          <!-- top-left ray -->
+          <line x1="145" y1="128" x2="100" y2="80"  stroke="#F2D500" stroke-width="10" stroke-linecap="round"/>
+          <!-- top-right ray -->
+          <line x1="175" y1="128" x2="220" y2="80"  stroke="#F2D500" stroke-width="10" stroke-linecap="round"/>
+          <!-- left ray -->
+          <line x1="128" y1="155" x2="62"  y2="155" stroke="#F2D500" stroke-width="10" stroke-linecap="round"/>
+          <!-- right ray -->
+          <line x1="192" y1="155" x2="258" y2="155" stroke="#F2D500" stroke-width="10" stroke-linecap="round"/>
+
+          <!-- ── Graduation cap board (flat square top) ── -->
+          <!-- Cap brim / mortarboard top -->
+          <rect x="105" y="130" width="110" height="14" rx="3" fill="#087563"/>
+          <!-- Cap body / bucket -->
+          <path d="M118 144 L118 185 Q118 200 160 200 Q202 200 202 185 L202 144 Z" fill="#087563"/>
+          <!-- Darker shadow on cap body right side -->
+          <path d="M175 144 L175 188 Q189 185 202 176 L202 144 Z" fill="#07594F"/>
+          <!-- Cap top flat square -->
+          <rect x="108" y="116" width="104" height="22" rx="4" fill="#087563"/>
+          <!-- Cap top highlight -->
+          <rect x="108" y="116" width="104" height="8" rx="4" fill="#0A8A73"/>
+
+          <!-- ── Tassel string ── -->
+          <line x1="202" y1="130" x2="215" y2="185" stroke="#07594F" stroke-width="4" stroke-linecap="round"/>
+          <!-- Tassel knot -->
+          <circle cx="215" cy="188" r="5" fill="#07594F"/>
+          <!-- Tassel fringe -->
+          <line x1="212" y1="193" x2="209" y2="215" stroke="#087563" stroke-width="3" stroke-linecap="round"/>
+          <line x1="215" y1="193" x2="215" y2="218" stroke="#087563" stroke-width="3" stroke-linecap="round"/>
+          <line x1="218" y1="193" x2="221" y2="215" stroke="#087563" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- ── Pen nib / pencil tip below cap ── -->
+          <polygon points="148,200 172,200 165,248 155,248" fill="#087563"/>
+          <polygon points="155,248 165,248 160,268" fill="#07594F"/>
+          <!-- nib highlight -->
+          <polygon points="148,200 156,200 150,245 148,240" fill="#0A8A73" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <!-- Slide indicators -->
+      <div class="slide-indicators" aria-label="Slide indicators">
+        <span class="indicator indicator--active" aria-current="true"></span>
+        <span class="indicator"></span>
+        <span class="indicator"></span>
+      </div>
+
+    </section>
+    <!-- /panel-white -->
+
+    <!-- -------------------------------------------------------
+         BLUE LEFT PANEL
+    ------------------------------------------------------- -->
+    <section class="panel-blue" aria-label="Main content panel">
+
+      <!-- ── Navigation ── -->
+      <header class="nav-bar" role="banner">
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#" class="nav-link nav-link--active" aria-current="page">HOME</a>
+          <a href="#" class="nav-link">ABOUT</a>
+          <a href="#" class="nav-link">PRODUCTS</a>
+          <a href="#" class="nav-link">CONTACTS</a>
+          <a href="#" class="nav-icon-btn" aria-label="Email">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+          </a>
+        </nav>
+        <a href="#" class="btn-login" aria-label="Login">
+          <i class="fa-regular fa-user" aria-hidden="true"></i>
+          LOGIN
+        </a>
+      </header>
+
+      <!-- ── Hero content ── -->
+      <div class="hero-content">
+        <h1 class="hero-title">education</h1>
+        <h2 class="hero-subtitle">Welcome to our site</h2>
+        <p class="hero-description">
+          There are many variations of passages of Lorem Ipsum available,
+          but the majority have suffered alteration in some form by injected.
+        </p>
+        <a href="#" class="btn-read-more" aria-label="Read more">
+          READ MORE &nbsp;<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <!-- ── Icon cards ── -->
+      <div class="icon-cards" aria-label="Feature highlights">
+        <div class="icon-card" aria-label="Statistics">
+          <i class="fa-solid fa-chart-bar" aria-hidden="true"></i>
+        </div>
+        <div class="icon-card" aria-label="Analytics">
+          <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+        </div>
+        <div class="icon-card" aria-label="Verified">
+          <i class="fa-solid fa-check" aria-hidden="true"></i>
+        </div>
+      </div>
+
+    </section>
+    <!-- /panel-blue -->
+
+  </main>
+  <!-- /card -->
+
+</body>
+</html>

@@ -1,0 +1,705 @@
+/* ================================================================
+   EDUCATION LANDING PAGE — style.css
+   ================================================================
+   TABLE OF CONTENTS
+   1. CSS Custom Properties (design tokens)
+   2. Reset & Base
+   3. Body / Background
+   4. Decorative Background Shapes
+   5. Main Card
+   6. White Right Panel + Curve
+   7. Graduation Cap Illustration
+   8. Slide Indicators
+   9. Blue Left Panel
+  10. Navigation Bar
+  11. Hero Content
+  12. Icon Cards
+  13. Responsive — Tablet (≤ 900px)
+  14. Responsive — Mobile  (≤ 600px)
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. CSS CUSTOM PROPERTIES
+---------------------------------------------------------------- */
+:root {
+  /* Colors */
+  --color-bg:           #152344;   /* dark navy page background   */
+  --color-blue:         #30579D;   /* main left-panel blue        */
+  --color-blue-dark:    #27478A;   /* slightly darker blue        */
+  --color-white:        #FFFFFF;
+  --color-teal:         #087563;   /* graduation cap main teal    */
+  --color-teal-dark:    #07594F;   /* graduation cap shadow       */
+  --color-yellow:       #F2D500;   /* rays & shape accents        */
+  --color-purple:       #9D83C5;   /* decorative circles          */
+  --color-orange-ring:  #E8A020;   /* thin circle ring accent     */
+  --color-border-light: #7895CC;   /* icon card borders           */
+  --color-nav-active:   rgba(255,255,255,0.22);
+
+  /* Typography */
+  --font-main:  'Inter', 'Segoe UI', Arial, sans-serif;
+
+  /* Spacing */
+  --card-radius: 28px;
+  --nav-height:  72px;
+}
+
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE
+---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* ----------------------------------------------------------------
+   3. BODY / BACKGROUND
+---------------------------------------------------------------- */
+body {
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+/* ----------------------------------------------------------------
+   4. DECORATIVE BACKGROUND SHAPES
+   These sit behind the card using fixed z-index layers.
+---------------------------------------------------------------- */
+.bg-shapes {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Base shape styles */
+.shape {
+  position: absolute;
+}
+
+/* ── Purple filled circles ── */
+.shape-circle {
+  border-radius: 50%;
+}
+
+.shape-purple {
+  background-color: var(--color-purple);
+  opacity: 0.85;
+}
+
+.shape-top-right {
+  width: 130px;
+  height: 130px;
+  top: 2%;
+  right: 8%;
+}
+
+.shape-bottom-left {
+  width: 160px;
+  height: 160px;
+  bottom: 3%;
+  left: 4%;
+}
+
+/* ── Thin ring circles (orange/yellow) ── */
+.shape-orange-ring {
+  background: transparent;
+  border: 4px solid var(--color-orange-ring);
+  border-radius: 50%;
+  opacity: 0.75;
+}
+
+.shape-top-far-right {
+  width: 90px;
+  height: 90px;
+  top: 1%;
+  right: 2%;
+}
+
+.shape-bottom-right {
+  width: 110px;
+  height: 110px;
+  bottom: 4%;
+  right: 5%;
+}
+
+/* ── Yellow diamond / rotated square ── */
+.shape-diamond {
+  background: transparent;
+  border: 4px solid var(--color-yellow);
+  width: 70px;
+  height: 70px;
+  transform: rotate(45deg);
+  opacity: 0.8;
+}
+
+.shape-top-center {
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.shape-bottom-center {
+  bottom: 1%;
+  left: 47%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* ── Thin accent bars on sides ── */
+.shape-bar {
+  width: 4px;
+  height: 80px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+}
+
+.shape-left-mid {
+  left: 1.5%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.shape-right-mid {
+  right: 1.5%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+/* ----------------------------------------------------------------
+   5. MAIN CARD
+   Two-column layout: blue (left) + white (right)
+   White panel is overlaid using absolute positioning so the
+   organic curved edge can be achieved with clip-path.
+---------------------------------------------------------------- */
+.card {
+  position: relative;
+  width: 92vw;
+  max-width: 1180px;
+  min-height: 82vh;
+  background-color: var(--color-blue);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ----------------------------------------------------------------
+   6. WHITE RIGHT PANEL + ORGANIC CURVE
+---------------------------------------------------------------- */
+.panel-white {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 58%;
+  height: 100%;
+  background-color: var(--color-white);
+
+  /*
+    clip-path creates the organic curved/diagonal left edge.
+    The path starts at top-right corner, sweeps to top-left
+    with a large curve, then down and back.
+
+    Coordinates are in percentage of the element's own box.
+
+    Breakdown of the path:
+      M 100% 0%      — top-right corner
+      L 0%   0%      — top-left corner  (flat top edge)
+      ... but we want a diagonal + curve, so:
+
+    We keep the right and bottom edges flush:
+      Top-right  → bottom-right → bottom-left → curve back up
+  */
+  clip-path: polygon(
+    /* diagonal top edge: starts ~38% from left at top → hard right */
+    38% 0%,
+    100% 0%,
+    100% 100%,
+    /* bottom-left swings inward for the curve */
+    6% 100%,
+    /* control anchor — the belly of the curve going upward */
+    0% 72%,
+    20% 30%
+  );
+
+  z-index: 2;
+  border-radius: 0 var(--card-radius) var(--card-radius) 0;
+}
+
+/*
+  An additional ::before pseudo-element draws a soft shadow strip
+  along the curved edge to give the two panels depth.
+*/
+.panel-white::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(30,60,130,0.12), transparent);
+  z-index: 3;
+  pointer-events: none;
+}
+
+
+/* ----------------------------------------------------------------
+   7. GRADUATION CAP ILLUSTRATION
+---------------------------------------------------------------- */
+.illustration-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grad-cap-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* rays extend beyond viewBox */
+}
+
+
+/* ----------------------------------------------------------------
+   8. SLIDE INDICATORS
+   Three small vertically-stacked circles near right edge
+---------------------------------------------------------------- */
+.slide-indicators {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 5;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #30579D;
+  background: transparent;
+  display: block;
+}
+
+.indicator--active {
+  background-color: #30579D;
+}
+
+
+/* ----------------------------------------------------------------
+   9. BLUE LEFT PANEL
+   This is the flex column that holds nav + hero + icons.
+   It doesn't need to be absolutely positioned — it is the card's
+   natural flow content, just constrained to ~45% width on desktop
+   so it doesn't bleed into the white area.
+---------------------------------------------------------------- */
+.panel-blue {
+  position: relative;
+  z-index: 3;
+  width: 48%;          /* leaves the right 52% for the white panel */
+  min-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 40px 0;
+}
+
+
+/* ----------------------------------------------------------------
+  10. NAVIGATION BAR
+  Absolutely positioned so it spans the full card width, sitting
+  above both the blue panel and white panel.
+---------------------------------------------------------------- */
+.nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding: 0 28px 0 32px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--color-white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.nav-link--active {
+  border: 2px solid rgba(255,255,255,0.65);
+  padding: 4px 14px;
+}
+
+/* Circular email icon button */
+.nav-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  color: var(--color-blue);
+  font-size: 0.95rem;
+  margin-left: 8px;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.nav-icon-btn:hover {
+  opacity: 0.85;
+}
+
+/* LOGIN button */
+.btn-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 22px;
+  border-radius: 22px;
+  border: 2px solid rgba(255,255,255,0.55);
+  color: var(--color-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  background: transparent;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-login:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.btn-login i {
+  font-size: 0.85rem;
+}
+
+
+/* ----------------------------------------------------------------
+  11. HERO CONTENT
+---------------------------------------------------------------- */
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 32px 0 42px;
+  max-width: 400px;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: var(--color-white);
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 500;
+  color: var(--color-white);
+  margin-bottom: 12px;
+}
+
+.hero-description {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  max-width: 320px;
+}
+
+/* READ MORE button */
+.btn-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 22px;
+  border-radius: 22px;
+  border: 1.5px solid rgba(255,255,255,0.55);
+  color: var(--color-white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  width: fit-content;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-read-more:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.8);
+}
+
+
+/* ----------------------------------------------------------------
+  12. ICON CARDS
+  Three square outlined cards at the bottom of the blue panel
+---------------------------------------------------------------- */
+.icon-cards {
+  display: flex;
+  gap: 14px;
+  padding: 0 0 0 42px;
+  margin-top: 32px;
+}
+
+.icon-card {
+  width: 68px;
+  height: 68px;
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-size: 1.5rem;
+  background: rgba(255,255,255,0.04);
+  transition: background 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+
+.icon-card:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.7);
+}
+
+
+/* ================================================================
+   FULL-WIDTH NAV FIX
+   The nav position:absolute spans the entire card width so it
+   sits over both the blue and white panels.
+================================================================ */
+
+/* Push hero content down so nav doesn't overlap it */
+.panel-blue {
+  padding-top: var(--nav-height);
+}
+
+/* ================================================================
+   13. RESPONSIVE — TABLET  (≤ 900px)
+================================================================ */
+@media (max-width: 900px) {
+
+  body {
+    padding: 24px 12px;
+    align-items: flex-start;
+  }
+
+  .card {
+    width: 96vw;
+    min-height: auto;
+  }
+
+  :root {
+    --nav-height: 62px;
+  }
+
+  .nav-link {
+    font-size: 0.7rem;
+    padding: 5px 10px;
+  }
+
+  .nav-links {
+    gap: 2px;
+  }
+
+  .btn-login {
+    padding: 6px 14px;
+    font-size: 0.7rem;
+  }
+
+  .panel-blue {
+    width: 50%;
+    min-height: 70vh;
+  }
+
+  .panel-white {
+    width: 56%;
+  }
+
+  .hero-content {
+    padding: 16px 20px 0 28px;
+  }
+
+  .icon-cards {
+    padding-left: 28px;
+    gap: 10px;
+  }
+
+  .icon-card {
+    width: 58px;
+    height: 58px;
+    font-size: 1.25rem;
+  }
+
+  .illustration-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+
+/* ================================================================
+   14. RESPONSIVE — MOBILE  (≤ 600px)
+================================================================ */
+@media (max-width: 600px) {
+
+  body {
+    padding: 16px 10px;
+    align-items: flex-start;
+  }
+
+  .card {
+    width: 100%;
+    min-height: auto;
+    border-radius: 18px;
+    flex-direction: column;
+    overflow: visible;       /* shapes shouldn't clip on mobile */
+  }
+
+  /* ── Nav ── */
+  .nav-bar {
+    position: relative;
+    height: auto;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    gap: 10px;
+    top: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .nav-link {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+
+  .btn-login {
+    padding: 5px 12px;
+    font-size: 0.65rem;
+  }
+
+  /* ── Blue panel ── */
+  .panel-blue {
+    position: relative;
+    width: 100%;
+    min-height: auto;
+    padding-top: 0;         /* nav is now in-flow */
+    padding-bottom: 32px;
+    z-index: 3;
+  }
+
+  /* ── Hero ── */
+  .hero-content {
+    padding: 20px 24px 0 24px;
+    max-width: 100%;
+  }
+
+  .hero-description {
+    max-width: 100%;
+  }
+
+  .icon-cards {
+    padding: 0 24px;
+    margin-top: 24px;
+  }
+
+  /* ── White panel stacks below on mobile ── */
+  .panel-white {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: 320px;
+    clip-path: none;
+    border-radius: 0 0 18px 18px;
+    z-index: 2;
+  }
+
+  .panel-white::before {
+    display: none;
+  }
+
+  .illustration-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+  }
+
+  .slide-indicators {
+    right: 14px;
+  }
+
+  /* ── Background shapes ── */
+  .shape-top-right,
+  .shape-top-far-right,
+  .shape-top-center,
+  .shape-bottom-left,
+  .shape-bottom-right,
+  .shape-bottom-center {
+    display: none;   /* hide shapes on mobile to avoid clutter */
+  }
+}

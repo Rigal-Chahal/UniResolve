@@ -1,2 +1,2 @@
-# vishanti-petition
+# UniResolve
 Grievance redressal portal
